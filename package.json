@@ -2,7 +2,7 @@
   "name": "cursor-snake",
   "displayName": "Monochrome Arcade",
   "description": "A monochrome arcade collection for VS Code and Cursor — Snake, 2048, Blocks, Minesweeper. Four minimalist classics, zero dependencies, keyboard-first.",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "publisher": "flancast90",
   "license": "MIT",
   "author": {
