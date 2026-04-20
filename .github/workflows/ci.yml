@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [18, 20]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      - run: npm run compile
+      - run: npx @vscode/vsce package --no-yarn --skip-license --allow-missing-repository
+      - uses: actions/upload-artifact@v4
+        if: matrix.node == 20
+        with:
+          name: vsix
+          path: '*.vsix'

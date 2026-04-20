@@ -1,0 +1,78 @@
+{
+  "name": "cursor-snake",
+  "displayName": "Snake",
+  "description": "A minimalist, monochrome Snake game inside VS Code and Cursor. Inspired by Google Snake — 8 modes, daily challenge, persistent high scores.",
+  "version": "0.1.0",
+  "publisher": "flancast90",
+  "license": "MIT",
+  "author": {
+    "name": "flancast90",
+    "url": "https://github.com/flancast90"
+  },
+  "homepage": "https://github.com/flancast90/cursor-snake#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/flancast90/cursor-snake.git"
+  },
+  "bugs": {
+    "url": "https://github.com/flancast90/cursor-snake/issues"
+  },
+  "icon": "media/icon.png",
+  "galleryBanner": {
+    "color": "#ffffff",
+    "theme": "light"
+  },
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "snake",
+    "game",
+    "arcade",
+    "break",
+    "fun",
+    "minimalist",
+    "monochrome",
+    "google snake"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [],
+  "contributes": {
+    "commands": [
+      {
+        "command": "cursor-snake.start",
+        "title": "Snake: Play",
+        "category": "Snake"
+      },
+      {
+        "command": "cursor-snake.dailyChallenge",
+        "title": "Snake: Play Daily Challenge",
+        "category": "Snake"
+      },
+      {
+        "command": "cursor-snake.resetHighScores",
+        "title": "Snake: Reset High Scores",
+        "category": "Snake"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "icon": "sips -s format png -Z 128 media/icon.svg --out media/icon.png",
+    "package": "vsce package",
+    "publish:vsce": "vsce publish",
+    "publish:ovsx": "ovsx publish"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/vscode": "^1.80.0",
+    "@vscode/vsce": "^2.32.0",
+    "ovsx": "^0.9.0",
+    "typescript": "^5.4.0"
+  }
+}
