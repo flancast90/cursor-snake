@@ -21,7 +21,7 @@ jobs:
       - run: npm ci
       - run: npm run compile
       - run: npx @vscode/vsce package --no-yarn --skip-license --allow-missing-repository
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: matrix.node == 22
         with:
           name: vsix
