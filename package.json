@@ -1,6 +1,6 @@
 {
   "name": "cursor-snake",
-  "displayName": "Snake",
+  "displayName": "Monochrome Snake",
   "description": "A minimalist, monochrome Snake game inside VS Code and Cursor. Inspired by Google Snake — 8 modes, daily challenge, persistent high scores.",
   "version": "0.1.0",
   "publisher": "flancast90",
