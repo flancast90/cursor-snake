@@ -1,27 +1,32 @@
 # Changelog
 
-All notable changes to this extension will be documented in this file.
+All notable changes to this project are documented here.
+Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.2.0] - 2026-04-19
 
-## [Unreleased]
-
-## [0.1.0] - 2026-04-19
+This release rebrands the extension from **Monochrome Snake** into **Cursor Arcade** — a multi-game arcade collection with the same minimalist aesthetic.
 
 ### Added
-- Initial release.
-- Eight preset game modes: Classic, Wall, Portal, Borderless, Cheese, Twin,
-  Poison, Peaceful — plus a Blender mode that mixes any of the seven mods.
-- Daily challenge with a deterministic seed per day.
-- Four speeds, three board sizes, four apple counts.
-- Light and Dark monochrome themes.
-- Pause / resume, restart, game-over screen, per-configuration high scores
-  persisted in VS Code `globalState`.
-- Direction queue (up to two buffered inputs per tick) so tight corner turns
-  register cleanly.
-- Minimalist monochrome canvas renderer: circular snake segments, ring apples,
-  hairline grid, no chrome around the playfield.
+- **2048** — slide/merge puzzle with smooth DOM tile animations, 4×4 / 5×5 / 6×6 board sizes, win-and-continue.
+- **Blocks** — tetromino stacker with 7-bag randomizer, hold piece, ghost piece, wall kicks, standard line-clear scoring, and speed curves per level.
+- **Minesweeper** — 9×9 / 16×16 / 24×16 difficulties, first-click-safe mine planting, flood reveal, flagging, and chord (middle-click or right-click on revealed number).
+- Unified main menu with keyboard hotkeys (`1`–`4`) for each game.
+- Per-game persistent high scores, keyed by mode/difficulty.
+- Global dark/light theme toggle shared across every game.
 
-[Unreleased]: https://github.com/flancast90/cursor-snake/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/flancast90/cursor-snake/releases/tag/v0.1.0
+### Changed
+- Extension identifier renamed from `flancast90.cursor-snake` to `flancast90.cursor-arcade-games` (new listing on both marketplaces).
+- Commands re-namespaced to `Arcade: …`.
+- Single-panel webview now routes between the main menu and individual games with zero-latency teardown/mount.
+- Design language tightened to pure monochrome across all games (previously Snake-only).
+
+### Removed
+- Standalone `snake.js` / `snake.css` bundled as top-level assets. Snake now lives as a module in `media/games/`.
+
+## [0.1.2] - 2026-04-19 (legacy: `cursor-snake`)
+- Last release under the original `cursor-snake` identifier. Marketplace link preserved for historical reference.
+
+## [0.1.0] - 2026-04-19 (legacy: `cursor-snake`)
+- Initial public release of the Snake extension.
+- Nine modes, daily challenge, persistent high scores, buffered input queue.

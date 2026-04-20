@@ -1,7 +1,20 @@
 name: Bug report
-description: Something is broken in Snake.
+description: Something is broken in Cursor Arcade.
 labels: [bug]
 body:
+  - type: dropdown
+    id: game
+    attributes:
+      label: Which game?
+      options:
+        - Snake
+        - "2048"
+        - Blocks
+        - Minesweeper
+        - Menu / shell / settings
+        - Multiple / unsure
+    validations:
+      required: true
   - type: textarea
     attributes:
       label: What happened?
@@ -11,7 +24,7 @@ body:
   - type: input
     attributes:
       label: Steps to reproduce
-      placeholder: "1. Open Snake: Play  2. Pick Portal mode  3. …"
+      placeholder: "1. Open Arcade  2. Pick Blocks  3. Hold Shift during …"
     validations:
       required: true
   - type: input
@@ -23,10 +36,10 @@ body:
   - type: input
     attributes:
       label: Extension version
-      placeholder: "0.1.0"
+      placeholder: "0.2.0"
     validations:
       required: true
   - type: textarea
     attributes:
       label: Settings used
-      description: Mode, speed, board size, apples, theme — if relevant.
+      description: Difficulty, mode, board size, theme — if relevant.

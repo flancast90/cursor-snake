@@ -2,34 +2,64 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 
-const HIGH_SCORES_KEY = 'cursorSnake.highScores.v1';
-const SETTINGS_KEY = 'cursorSnake.settings.v1';
+const STORAGE_KEY = 'cursorArcade.v1';
 
-type HighScores = Record<string, number>;
+type GameId = 'snake' | 'twenty48' | 'blocks' | 'sweeper';
+
+interface ArcadeStorage {
+  highScores: Record<string, number>;
+  settings: Record<string, unknown>;
+}
 
 export function activate(context: vscode.ExtensionContext) {
-  const open = (options?: { dailyChallenge?: boolean }) => {
-    SnakePanel.createOrShow(context, options);
+  const open = (opts: { game?: GameId; daily?: boolean } = {}) => {
+    ArcadePanel.createOrShow(context, opts);
   };
 
+  const commands: Array<[string, () => void]> = [
+    ['cursor-arcade.open', () => open()],
+    ['cursor-arcade.snake', () => open({ game: 'snake' })],
+    ['cursor-arcade.twenty48', () => open({ game: 'twenty48' })],
+    ['cursor-arcade.blocks', () => open({ game: 'blocks' })],
+    ['cursor-arcade.sweeper', () => open({ game: 'sweeper' })],
+    ['cursor-arcade.dailyChallenge', () => open({ game: 'snake', daily: true })],
+  ];
+
+  for (const [id, fn] of commands) {
+    context.subscriptions.push(vscode.commands.registerCommand(id, fn));
+  }
+
   context.subscriptions.push(
-    vscode.commands.registerCommand('cursor-snake.start', () => open()),
-    vscode.commands.registerCommand('cursor-snake.dailyChallenge', () =>
-      open({ dailyChallenge: true }),
-    ),
-    vscode.commands.registerCommand('cursor-snake.resetHighScores', async () => {
-      await context.globalState.update(HIGH_SCORES_KEY, {});
-      vscode.window.showInformationMessage('Snake high scores cleared.');
-      SnakePanel.current?.postMessage({ type: 'highScores', scores: {} });
+    vscode.commands.registerCommand('cursor-arcade.resetHighScores', async () => {
+      const storage = readStorage(context);
+      storage.highScores = {};
+      await writeStorage(context, storage);
+      vscode.window.showInformationMessage('Cursor Arcade: all high scores cleared.');
+      ArcadePanel.current?.postMessage({ type: 'storage', storage });
     }),
   );
 }
 
 export function deactivate() {}
 
-class SnakePanel {
-  public static current: SnakePanel | undefined;
-  private static readonly viewType = 'cursorSnake';
+function readStorage(context: vscode.ExtensionContext): ArcadeStorage {
+  const stored = context.globalState.get<ArcadeStorage>(STORAGE_KEY);
+  if (stored && typeof stored === 'object') {
+    return {
+      highScores: stored.highScores ?? {},
+      settings: stored.settings ?? {},
+    };
+  }
+  return { highScores: {}, settings: {} };
+}
+
+function writeStorage(context: vscode.ExtensionContext, storage: ArcadeStorage) {
+  return context.globalState.update(STORAGE_KEY, storage);
+}
+
+class ArcadePanel {
+  public static current: ArcadePanel | undefined;
+  private static readonly viewType = 'cursorArcade';
 
   private readonly panel: vscode.WebviewPanel;
   private readonly context: vscode.ExtensionContext;
@@ -37,22 +67,26 @@ class SnakePanel {
 
   public static createOrShow(
     context: vscode.ExtensionContext,
-    options?: { dailyChallenge?: boolean },
+    opts: { game?: GameId; daily?: boolean },
   ) {
     const column = vscode.window.activeTextEditor?.viewColumn ?? vscode.ViewColumn.One;
 
-    if (SnakePanel.current) {
-      SnakePanel.current.panel.reveal(column);
-      if (options?.dailyChallenge) {
-        SnakePanel.current.postMessage({ type: 'startDailyChallenge' });
+    if (ArcadePanel.current) {
+      ArcadePanel.current.panel.reveal(column);
+      if (opts.game) {
+        ArcadePanel.current.postMessage({
+          type: 'navigate',
+          game: opts.game,
+          daily: !!opts.daily,
+        });
       }
       return;
     }
 
     const mediaRoot = vscode.Uri.file(path.join(context.extensionPath, 'media'));
     const panel = vscode.window.createWebviewPanel(
-      SnakePanel.viewType,
-      'Snake',
+      ArcadePanel.viewType,
+      'Cursor Arcade',
       column,
       {
         enableScripts: true,
@@ -61,14 +95,14 @@ class SnakePanel {
       },
     );
 
-    SnakePanel.current = new SnakePanel(panel, context);
-
-    if (options?.dailyChallenge) {
-      SnakePanel.current.postMessage({ type: 'startDailyChallenge' });
-    }
+    ArcadePanel.current = new ArcadePanel(panel, context, opts);
   }
 
-  private constructor(panel: vscode.WebviewPanel, context: vscode.ExtensionContext) {
+  private constructor(
+    panel: vscode.WebviewPanel,
+    context: vscode.ExtensionContext,
+    opts: { game?: GameId; daily?: boolean },
+  ) {
     this.panel = panel;
     this.context = context;
 
@@ -77,15 +111,15 @@ class SnakePanel {
 
     this.panel.onDidDispose(() => this.dispose(), null, this.disposables);
     this.panel.webview.onDidReceiveMessage(
-      (msg) => this.onMessage(msg),
+      (msg) => void this.onMessage(msg),
       null,
       this.disposables,
     );
 
     this.postMessage({
       type: 'hydrate',
-      highScores: this.getHighScores(),
-      settings: this.context.globalState.get(SETTINGS_KEY, null),
+      storage: readStorage(this.context),
+      nav: { game: opts.game ?? null, daily: !!opts.daily },
     });
   }
 
@@ -93,42 +127,44 @@ class SnakePanel {
     void this.panel.webview.postMessage(message);
   }
 
-  private onMessage(msg: any) {
+  private async onMessage(msg: unknown): Promise<void> {
     if (!msg || typeof msg !== 'object') return;
-    switch (msg.type) {
+    const m = msg as Record<string, unknown>;
+    const storage = readStorage(this.context);
+
+    switch (m.type) {
       case 'submitScore': {
-        const key: string = String(msg.key ?? 'classic');
-        const score: number = Math.max(0, Math.floor(Number(msg.score) || 0));
-        const scores = this.getHighScores();
-        if (!scores[key] || score > scores[key]) {
-          scores[key] = score;
-          void this.context.globalState.update(HIGH_SCORES_KEY, scores);
-          this.postMessage({ type: 'highScores', scores });
+        const key = String(m.key ?? '');
+        const score = Math.max(0, Math.floor(Number(m.score) || 0));
+        if (!key) return;
+        if (!storage.highScores[key] || score > storage.highScores[key]) {
+          storage.highScores[key] = score;
+          await writeStorage(this.context, storage);
+          this.postMessage({ type: 'storage', storage });
         }
         return;
       }
       case 'saveSettings': {
-        void this.context.globalState.update(SETTINGS_KEY, msg.settings ?? null);
+        const game = String(m.game ?? 'global');
+        storage.settings[game] = m.settings ?? null;
+        await writeStorage(this.context, storage);
         return;
       }
-      case 'requestHighScores': {
-        this.postMessage({ type: 'highScores', scores: this.getHighScores() });
+      case 'requestStorage': {
+        this.postMessage({ type: 'storage', storage });
         return;
       }
       case 'resetHighScores': {
-        void this.context.globalState.update(HIGH_SCORES_KEY, {});
-        this.postMessage({ type: 'highScores', scores: {} });
+        storage.highScores = {};
+        await writeStorage(this.context, storage);
+        this.postMessage({ type: 'storage', storage });
         return;
       }
       case 'toast': {
-        vscode.window.showInformationMessage(String(msg.message ?? ''));
+        vscode.window.showInformationMessage(String(m.message ?? ''));
         return;
       }
     }
-  }
-
-  private getHighScores(): HighScores {
-    return this.context.globalState.get<HighScores>(HIGH_SCORES_KEY, {}) ?? {};
   }
 
   private buildIconUri() {
@@ -141,11 +177,22 @@ class SnakePanel {
     const mediaPath = path.join(this.context.extensionPath, 'media');
     const htmlPath = path.join(mediaPath, 'index.html');
 
-    const scriptUri = webview.asWebviewUri(vscode.Uri.file(path.join(mediaPath, 'snake.js')));
-    const styleUri = webview.asWebviewUri(vscode.Uri.file(path.join(mediaPath, 'snake.css')));
-    const nonce = makeNonce();
+    const styleUri = webview.asWebviewUri(vscode.Uri.file(path.join(mediaPath, 'arcade.css')));
+    const arcadeJsUri = webview.asWebviewUri(vscode.Uri.file(path.join(mediaPath, 'arcade.js')));
+    const snakeUri = webview.asWebviewUri(
+      vscode.Uri.file(path.join(mediaPath, 'games', 'snake.js')),
+    );
+    const twenty48Uri = webview.asWebviewUri(
+      vscode.Uri.file(path.join(mediaPath, 'games', 'twenty48.js')),
+    );
+    const blocksUri = webview.asWebviewUri(
+      vscode.Uri.file(path.join(mediaPath, 'games', 'blocks.js')),
+    );
+    const sweeperUri = webview.asWebviewUri(
+      vscode.Uri.file(path.join(mediaPath, 'games', 'sweeper.js')),
+    );
 
-    let html = fs.readFileSync(htmlPath, 'utf8');
+    const nonce = makeNonce();
     const csp =
       `default-src 'none'; ` +
       `img-src ${webview.cspSource} data: blob:; ` +
@@ -153,18 +200,23 @@ class SnakePanel {
       `script-src 'nonce-${nonce}'; ` +
       `font-src ${webview.cspSource};`;
 
+    let html = fs.readFileSync(htmlPath, 'utf8');
     html = html
       .replace(/{{cspSource}}/g, webview.cspSource)
       .replace(/{{csp}}/g, csp)
       .replace(/{{nonce}}/g, nonce)
-      .replace(/{{scriptUri}}/g, scriptUri.toString())
-      .replace(/{{styleUri}}/g, styleUri.toString());
+      .replace(/{{styleUri}}/g, styleUri.toString())
+      .replace(/{{arcadeJsUri}}/g, arcadeJsUri.toString())
+      .replace(/{{snakeUri}}/g, snakeUri.toString())
+      .replace(/{{twenty48Uri}}/g, twenty48Uri.toString())
+      .replace(/{{blocksUri}}/g, blocksUri.toString())
+      .replace(/{{sweeperUri}}/g, sweeperUri.toString());
 
     return html;
   }
 
   public dispose() {
-    SnakePanel.current = undefined;
+    ArcadePanel.current = undefined;
     this.panel.dispose();
     while (this.disposables.length) {
       const d = this.disposables.pop();
@@ -175,9 +227,9 @@ class SnakePanel {
 
 function makeNonce(): string {
   let text = '';
-  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   for (let i = 0; i < 32; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
+    text += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
   }
   return text;
 }

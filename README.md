@@ -1,157 +1,203 @@
-# Snake
+<div align="center">
 
-A minimalist, monochrome Snake game that lives inside VS Code and Cursor.
-Inspired by Google Snake — eight modes, daily challenge, persistent high
-scores, no color except the dots on the page.
+# Cursor Arcade
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-black.svg)](./LICENSE)
-[![VS Marketplace](https://img.shields.io/visual-studio-marketplace/v/flancast90.cursor-snake?label=VS%20Marketplace&color=black)](https://marketplace.visualstudio.com/items?itemName=flancast90.cursor-snake)
-[![Open VSX](https://img.shields.io/open-vsx/v/flancast90/cursor-snake?label=Open%20VSX&color=black)](https://open-vsx.org/extension/flancast90/cursor-snake)
-[![GitHub stars](https://img.shields.io/github/stars/flancast90/cursor-snake?color=black&logo=github)](https://github.com/flancast90/cursor-snake/stargazers)
+**Minimalist arcade classics inside your editor.**
+Snake. 2048. Blocks. Minesweeper.
+Monochrome. Keyboard-first. Zero dependencies. One keystroke away.
+
+<p>
+  <a href="https://marketplace.visualstudio.com/items?itemName=flancast90.cursor-arcade-games"><img alt="Visual Studio Marketplace Version" src="https://img.shields.io/visual-studio-marketplace/v/flancast90.cursor-arcade-games?color=000&label=VS%20Code&style=flat-square"></a>
+  <a href="https://open-vsx.org/extension/flancast90/cursor-arcade-games"><img alt="Open VSX Version" src="https://img.shields.io/open-vsx/v/flancast90/cursor-arcade-games?color=000&label=Open%20VSX&style=flat-square"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=flancast90.cursor-arcade-games"><img alt="Installs" src="https://img.shields.io/visual-studio-marketplace/i/flancast90.cursor-arcade-games?color=000&label=installs&style=flat-square"></a>
+  <a href="./LICENSE"><img alt="MIT License" src="https://img.shields.io/github/license/flancast90/cursor-arcade-games?color=000&style=flat-square"></a>
+  <a href="https://github.com/flancast90/cursor-arcade-games/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/flancast90/cursor-arcade-games?color=000&style=flat-square"></a>
+</p>
+
+<br />
+
+<img src="media/icon.png" alt="Cursor Arcade" width="120" />
+
+</div>
 
 ---
+
+## Why
+
+You spent three hours rebasing. Compile just failed. The linter is screaming. You don't want to alt-tab to a browser and burn the next twenty minutes on r/games — you want three minutes, something your hands already know, and a fresh brain when you come back.
+
+**Cursor Arcade gives you four games at one keystroke**, all rendered in the same restrained black-and-white grammar as the rest of your IDE. No animations that distract. No accounts. No telemetry. No web requests. Close the panel and they disappear — your best scores don't.
+
+## The Games
+
+|   | Game | Why it's here | Controls |
+|---|---|---|---|
+|   | **Snake** | The reigning champion of "just five more minutes." 5 modes + a worldwide daily challenge. | Arrows / WASD · `Space` pause |
+|   | **2048** | The math puzzle that has convinced more people they're bad at addition than any other. 4×4, 5×5, 6×6. | Arrows / WASD |
+|   | **Blocks** | Tetrominoes stacking into lines. Hold, ghost-piece, standard scoring. Because of course. | Arrows · `Z`/`X` rotate · `Space` hard-drop · `C` hold |
+|   | **Minesweeper** | Pure logic. Occasionally pure guessing. Easy / Medium / Hard. | Click reveal · Right-click / Shift+click flag · Middle-click chord |
+
+Each game tracks a persistent high score. Every game is keyboard-native. Every game fits the same monochrome grid so nothing looks out of place next to your code.
 
 ## Install
 
-### Cursor
+### From the marketplace
 
-Open the Extensions panel (`Cmd+Shift+X`), search **Snake**, click Install.
-Or from the command palette (`Cmd+Shift+P`):
+- **VS Code / VSCodium** — [install from the Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=flancast90.cursor-arcade-games) or search *Cursor Arcade* in the Extensions pane.
+- **Cursor / other OSS VS Code forks** — [install from Open VSX](https://open-vsx.org/extension/flancast90/cursor-arcade-games) or search *Cursor Arcade* in Cursor's Extensions pane.
+
+### Manual (VSIX)
+
+Download the latest `.vsix` from the [releases page](https://github.com/flancast90/cursor-arcade-games/releases/latest), then:
 
 ```
-Extensions: Install Extension → flancast90.cursor-snake
+Cmd/Ctrl + Shift + P  →  Extensions: Install from VSIX…
 ```
 
-Cursor pulls from the [Open VSX Registry](https://open-vsx.org/extension/flancast90/cursor-snake).
+## Quick start
 
-### VS Code
-
-Same flow — or grab it from the
-[Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=flancast90.cursor-snake).
-
-### Latest release VSIX
-
-You can always grab the latest `.vsix` directly from
-[**GitHub Releases**](https://github.com/flancast90/cursor-snake/releases/latest),
-then in Cursor / VS Code run **Extensions: Install from VSIX…** and pick it.
-
-### From source
-
-```bash
-git clone https://github.com/flancast90/cursor-snake
-cd cursor-snake
-npm install
-npm run compile
-npm run package        # produces cursor-snake-<version>.vsix
-```
-
-Then **Extensions: Install from VSIX…** in Cursor / VS Code.
-
----
-
-## Play
-
-Open the command palette (`Cmd+Shift+P`) and run:
+Hit `Cmd/Ctrl + Shift + P` and run one of:
 
 | Command | What it does |
-| --- | --- |
-| `Snake: Play` | Open the game panel |
-| `Snake: Play Daily Challenge` | Same seed for everyone today |
-| `Snake: Reset High Scores` | Wipe saved bests |
+|---|---|
+| `Arcade: Open Arcade` | Open the menu. |
+| `Arcade: Play Snake` | Jump straight into Snake. |
+| `Arcade: Play 2048` | Jump straight into 2048. |
+| `Arcade: Play Blocks` | Jump straight into Blocks. |
+| `Arcade: Play Minesweeper` | Jump straight into Minesweeper. |
+| `Arcade: Play Snake — Daily Challenge` | The same seeded board as everyone else today. |
+| `Arcade: Reset All High Scores` | Start fresh. |
 
-### Controls
+From the main menu, press `1`–`4` to pick a game. `Esc` always takes you back. `Space` pauses. `R` restarts. That's the whole shape of it.
 
+## Controls
+
+### Snake
 | Key | Action |
-| --- | --- |
-| Arrow keys / `WASD` | Move |
-| `Space` or `P` | Pause / resume |
+|---|---|
+| `↑ ↓ ← →` or `W A S D` | Turn |
+| `Space` or `P` | Pause |
 | `R` | Restart |
-| `Enter` | Start / play again |
-| `Esc` | Open / close settings |
 
-Corner turns work — the input layer buffers up to two keypresses per tick, so
-`Right → Up` in rapid succession both register.
+### 2048
+| Key | Action |
+|---|---|
+| `↑ ↓ ← →` or `W A S D` | Slide |
+| `R` | Restart |
 
----
+### Blocks
+| Key | Action |
+|---|---|
+| `← →` | Move left / right |
+| `↓` | Soft drop |
+| `↑` or `X` | Rotate clockwise |
+| `Z` | Rotate counter-clockwise |
+| `Space` | Hard drop |
+| `C` or `Shift` | Hold piece |
+| `P` | Pause |
 
-## Modes
+### Minesweeper
+| Action | Input |
+|---|---|
+| Reveal cell | Left click |
+| Flag cell | Right click, or `Shift`+click |
+| Chord (reveal around completed number) | Middle click, or right-click a revealed number |
 
-| Mode | Behavior |
-| --- | --- |
-| **Classic** | The original: hit a wall or yourself and it's over. |
-| **Wall** | Random internal walls spawn at game start. Deterministic in Daily. |
-| **Portal** | A pair of portals teleports the snake to the other side. |
-| **Borderless** | Edges wrap around; no walls to die on. |
-| **Cheese** | Snake passes through itself; apples grow it by two. |
-| **Twin** | Two mirrored snakes move in lockstep — both must survive. |
-| **Poison** | Gray apples poison the snake; it auto-steers for several ticks. |
-| **Peaceful** | No death, just vibes and a growing trail. |
-| **Blender** | Mix any combination of the seven mods independently. |
+## Features
 
-## Settings
+- **Four polished games** in one extension — no tab-switching, no context-switching.
+- **Monochrome throughout** — designed to live next to your code without yelling.
+- **Persistent high scores** per game, per mode, per difficulty.
+- **Worldwide daily Snake challenge** — a seeded board that changes every UTC day.
+- **Hold + ghost + 7-bag randomizer** in Blocks, because that's the right way to do it.
+- **No telemetry. No network. No dependencies.** The whole extension is one TypeScript file and a few hundred lines of vanilla JS in a webview.
+- **Dark & light themes** that follow your vibe.
+- **`Esc` always goes back**, `Space` always pauses. Muscle memory stays yours.
 
-- **Speed** — Slow (170ms/tick), Normal (115ms), Fast (75ms), Turbo (50ms)
-- **Apples on board** — 1, 3, 5, or 9
-- **Board size** — Small (15×11), Medium (19×13), Large (25×15)
-- **Theme** — Light (default) or Dark, both strictly black and white
-- **Grid** — on/off
-- **Sound** — tiny WebAudio blips, off by default
+## Roadmap
 
-High scores are keyed by the full configuration (mode + mods + board + speed +
-apples) and persisted in VS Code's `globalState`, so they survive restarts.
-The daily challenge gets its own score bucket.
+Ideas welcome via [issues](https://github.com/flancast90/cursor-arcade-games/issues).
 
-## Design
+- [ ] Pong / Breakout
+- [ ] Wordle-style 5-letter puzzle with local wordlist
+- [ ] Solitaire
+- [ ] Sokoban with a built-in level editor
+- [ ] Per-game leaderboards (opt-in, local file only)
+- [ ] Touch input
 
-Purely monochrome. One weight of ink:
+## Design notes
 
-- Background: `#ffffff` (`#0a0a0a` in dark theme)
-- Snake segments: filled black circles
-- Apple: thin black ring with a small center dot
-- Grid: very light grey hairlines (`#ededed`)
-- No panel borders around the playfield — the map blends into the page
+The entire design language is: **one font family, three greys, no drop shadows, no gradients, no easing that you can visibly see**. Every time you're tempted to add a color, add contrast instead. Every time you're tempted to animate, ask whether it would survive on a Kindle.
 
-The only ambient motion during play is a ~6% breathing pulse on the apple.
-Fruit pickup triggers a short monochrome particle burst and an expanding ring
-flash — the one concession to feedback.
-
----
+The webview is pure HTML/CSS/JS — no React, no bundler, no build step beyond `tsc` for the extension host. This is because every extra dependency is another thing to update, another attack surface, and another reason for the extension to be 20 MB.
 
 ## Development
 
 ```bash
+git clone https://github.com/flancast90/cursor-arcade-games
+cd cursor-arcade-games
 npm install
-npm run watch          # or: npm run compile
+npm run compile        # or: npm run watch
 ```
 
-- `src/extension.ts` — activation, command registration, webview panel,
-  high-score persistence via `globalState`
-- `media/index.html` — webview shell with CSP + nonce placeholders
-- `media/snake.css` — monochrome stylesheet
-- `media/snake.js` — game loop, rendering, input, modes
+Open the folder in VS Code / Cursor and press `F5` to launch an Extension Development Host. Then `Cmd/Ctrl+Shift+P → Arcade: Open Arcade`.
 
-### Hot-reload tips
+### Adding a new game
 
-- Edits to anything in `media/` → close the Snake tab and reopen via
-  **Snake: Play**. The webview re-reads assets each time a panel is created.
-- Edits to `src/extension.ts` → `npm run compile`, then run
-  **Developer: Reload Window** (no full restart needed).
+Every game is a single file in `media/games/` that registers itself:
 
-### Build & publish
+```js
+(function () {
+  const R = window.CursorArcade;
+  R.games.mygame = {
+    create(ctx) {
+      return new MyGame(ctx);
+    },
+  };
+  class MyGame {
+    constructor({ host, api, meta, options }) { /* ... */ }
+    onKey(e)       { /* keyboard input */ }
+    destroy()      { /* cleanup */ }
 
-```bash
-npm run package              # -> cursor-snake-<version>.vsix
-npm run publish:vsce         # -> Visual Studio Marketplace
-npm run publish:ovsx         # -> Open VSX (Cursor et al.)
+    // Optional:
+    togglePause()  {}
+    restart()      {}
+    buildSettings(container) {}
+    onContextMenu(e) {}
+  }
+})();
 ```
 
----
+Then:
+
+1. Add a metadata entry to `GAME_META` in `media/arcade.js`.
+2. Add a `<script>` tag for your new file in `media/index.html`.
+3. Pass its URI from `src/extension.ts`.
+4. Add commands in `package.json` if you want direct launchers.
+
+See `CONTRIBUTING.md` for the full checklist.
 
 ## Contributing
 
-Issues and PRs welcome. See [CONTRIBUTING.md](./CONTRIBUTING.md) for the short
-version.
+Pull requests welcome. Bugs, ideas, and gloriously pedantic UX nitpicks are all equally welcome. See [`CONTRIBUTING.md`](./CONTRIBUTING.md).
+
+If you're shipping a new game, please keep the aesthetic monochrome — we'll merge anything reasonable that stays inside the design constraints.
 
 ## License
 
-[MIT](./LICENSE) © flancast90
+[MIT](./LICENSE). Do whatever you want. A link back is nice but not required.
+
+## Credits
+
+- **2048** — original concept by [Gabriele Cirulli](https://github.com/gabrielecirulli/2048), MIT-licensed.
+- **Snake** — variants inspired by Google's search-engine easter egg and the [slither.io](https://slither.io) lineage.
+- **Blocks** — tetromino stacking is the mechanic; this implementation is independent and not affiliated with Tetris Holding.
+- **Minesweeper** — Microsoft's 1990 classic; the underlying game is in the public domain.
+
+---
+
+<div align="center">
+
+If Cursor Arcade helped you survive a rebase, <a href="https://github.com/flancast90/cursor-arcade-games">star the repo</a>. Seriously. I notice.
+
+</div>

@@ -1,21 +1,21 @@
 {
-  "name": "cursor-snake",
-  "displayName": "Monochrome Snake",
-  "description": "A minimalist, monochrome Snake game inside VS Code and Cursor. Inspired by Google Snake — 8 modes, daily challenge, persistent high scores.",
-  "version": "0.1.2",
+  "name": "cursor-arcade-games",
+  "displayName": "Cursor Arcade",
+  "description": "A monochrome arcade collection for VS Code and Cursor — Snake, 2048, Blocks, Minesweeper. Four minimalist classics, zero dependencies, keyboard-first.",
+  "version": "0.2.0",
   "publisher": "flancast90",
   "license": "MIT",
   "author": {
     "name": "flancast90",
     "url": "https://github.com/flancast90"
   },
-  "homepage": "https://github.com/flancast90/cursor-snake#readme",
+  "homepage": "https://github.com/flancast90/cursor-arcade-games#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/flancast90/cursor-snake.git"
+    "url": "https://github.com/flancast90/cursor-arcade-games.git"
   },
   "bugs": {
-    "url": "https://github.com/flancast90/cursor-snake/issues"
+    "url": "https://github.com/flancast90/cursor-arcade-games/issues"
   },
   "icon": "media/icon.png",
   "galleryBanner": {
@@ -30,32 +30,60 @@
   ],
   "keywords": [
     "snake",
-    "game",
+    "2048",
+    "tetris",
+    "blocks",
+    "minesweeper",
     "arcade",
+    "game",
+    "games",
     "break",
+    "focus",
     "fun",
     "minimalist",
     "monochrome",
-    "google snake"
+    "puzzle",
+    "classic",
+    "retro"
   ],
   "main": "./out/extension.js",
   "activationEvents": [],
   "contributes": {
     "commands": [
       {
-        "command": "cursor-snake.start",
-        "title": "Snake: Play",
-        "category": "Snake"
+        "command": "cursor-arcade.open",
+        "title": "Open Arcade",
+        "category": "Arcade"
       },
       {
-        "command": "cursor-snake.dailyChallenge",
-        "title": "Snake: Play Daily Challenge",
-        "category": "Snake"
+        "command": "cursor-arcade.snake",
+        "title": "Play Snake",
+        "category": "Arcade"
       },
       {
-        "command": "cursor-snake.resetHighScores",
-        "title": "Snake: Reset High Scores",
-        "category": "Snake"
+        "command": "cursor-arcade.twenty48",
+        "title": "Play 2048",
+        "category": "Arcade"
+      },
+      {
+        "command": "cursor-arcade.blocks",
+        "title": "Play Blocks",
+        "category": "Arcade"
+      },
+      {
+        "command": "cursor-arcade.sweeper",
+        "title": "Play Minesweeper",
+        "category": "Arcade"
+      },
+      {
+        "command": "cursor-arcade.dailyChallenge",
+        "title": "Play Snake — Daily Challenge",
+        "category": "Arcade"
+      },
+      {
+        "command": "cursor-arcade.resetHighScores",
+        "title": "Reset All High Scores",
+        "category": "Arcade"
       }
     ]
   },

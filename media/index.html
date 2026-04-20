@@ -1,191 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="Content-Security-Policy" content="{{csp}}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="{{styleUri}}" rel="stylesheet" />
-    <title>Snake</title>
+    <title>Cursor Arcade</title>
+    <link rel="stylesheet" href="{{styleUri}}" />
   </head>
-  <body data-theme="light">
-    <div id="bg-grid"></div>
-    <div id="scanlines"></div>
-
-    <div class="app">
+  <body>
+    <div id="app">
+      <!-- Header -->
       <header class="topbar">
-        <div class="brand">
-          <span class="logo-dot"></span>
-          <span class="logo-text">Snake</span>
-        </div>
-        <div class="stats">
-          <div class="stat">
-            <span class="stat-label">score</span>
-            <span class="stat-value" id="score">0</span>
-          </div>
-          <div class="stat">
-            <span class="stat-label">best</span>
-            <span class="stat-value" id="highScore">0</span>
-          </div>
-          <div class="stat">
-            <span class="stat-label">length</span>
-            <span class="stat-value" id="length">3</span>
-          </div>
-          <div class="stat">
-            <span class="stat-label">mode</span>
-            <span class="stat-value" id="modeLabel">Classic</span>
-          </div>
-        </div>
+        <button id="btnMenu" class="link" aria-label="Back to menu" title="Back to menu (Esc)">
+          <span class="brand">Cursor Arcade</span>
+        </button>
+        <nav class="stats" id="stats" aria-live="polite"></nav>
         <div class="actions">
-          <button class="btn ghost" id="btnSettings" title="Settings (Esc)">Settings</button>
-          <button class="btn primary" id="btnStart" title="Start / Restart (Enter)">Play</button>
+          <button id="btnPause" class="link hidden" title="Pause (Space)">Pause</button>
+          <button id="btnRestart" class="link hidden" title="Restart (R)">Restart</button>
+          <button id="btnSettings" class="link" aria-label="Settings" title="Settings">Settings</button>
         </div>
       </header>
 
-      <main class="stage">
-        <canvas id="board" width="760" height="520"></canvas>
-        <div class="overlay" id="overlay">
-          <div class="overlay-card" id="overlayCard">
-            <div class="overlay-title" id="overlayTitle">Ready</div>
-            <div class="overlay-body" id="overlayBody">
-              <kbd>Arrows</kbd> or <kbd>WASD</kbd> to move &nbsp;·&nbsp;
-              <kbd>Space</kbd> pause &nbsp;·&nbsp;
-              <kbd>R</kbd> restart &nbsp;·&nbsp;
-              <kbd>Esc</kbd> settings
+      <!-- Main Menu -->
+      <section id="menu" class="menu">
+        <div class="menu-inner">
+          <h1 class="hero">Pick a game.</h1>
+          <p class="hero-sub">Four minimalist classics. Keyboard only. No ads, no trackers, no nonsense.</p>
+          <div class="game-grid" id="gameGrid" role="list"></div>
+          <p class="menu-tip">Press a game's number key to jump in. <kbd>Esc</kbd> always returns here.</p>
+        </div>
+      </section>
+
+      <!-- Game host -->
+      <section id="stage" class="stage hidden" aria-label="Game stage">
+        <div id="gameHost" class="game-host"></div>
+        <div id="overlay" class="overlay hidden">
+          <div class="overlay-inner">
+            <h2 id="overlayTitle">Paused</h2>
+            <p id="overlaySub">Press Space to resume.</p>
+            <div id="overlayActions" class="overlay-actions">
+              <button id="overlayPrimary" class="btn">Resume</button>
+              <button id="overlaySecondary" class="btn ghost">Back to menu</button>
             </div>
-            <button class="btn primary big" id="overlayBtn">Start</button>
           </div>
         </div>
-      </main>
+      </section>
 
-      <footer class="hints" hidden>
-        <span id="fpsLabel"></span>
-      </footer>
+      <!-- Settings drawer -->
+      <aside id="settings" class="settings hidden" aria-hidden="true">
+        <div class="settings-inner">
+          <header class="settings-head">
+            <h2>Settings</h2>
+            <button id="btnCloseSettings" class="link">Close</button>
+          </header>
+          <div id="settingsBody" class="settings-body"></div>
+          <footer class="settings-foot">
+            <button id="btnResetHS" class="link danger">Reset all high scores</button>
+          </footer>
+        </div>
+      </aside>
     </div>
 
-    <aside class="drawer" id="settingsDrawer" aria-hidden="true">
-      <div class="drawer-inner">
-        <div class="drawer-head">
-          <h2>Settings</h2>
-          <button class="iconbtn" id="closeSettings" title="Close">×</button>
-        </div>
-
-        <div class="section">
-          <label class="field">
-            <span>Mode</span>
-            <select id="selMode">
-              <option value="classic">Classic</option>
-              <option value="wall">Wall</option>
-              <option value="portal">Portal</option>
-              <option value="borderless">Borderless</option>
-              <option value="cheese">Cheese</option>
-              <option value="twin">Twin</option>
-              <option value="poison">Poison</option>
-              <option value="peaceful">Peaceful</option>
-              <option value="blender">Blender (custom)</option>
-            </select>
-          </label>
-          <p class="hint" id="modeHint">Collide with walls or yourself to die. The original.</p>
-        </div>
-
-        <div class="section">
-          <label class="field">
-            <span>Speed</span>
-            <select id="selSpeed">
-              <option value="slow">Slow</option>
-              <option value="normal" selected>Normal</option>
-              <option value="fast">Fast</option>
-              <option value="turbo">Turbo</option>
-            </select>
-          </label>
-          <label class="field">
-            <span>Apples</span>
-            <select id="selApples">
-              <option value="1">1</option>
-              <option value="3" selected>3</option>
-              <option value="5">5</option>
-              <option value="9">9</option>
-            </select>
-          </label>
-          <label class="field">
-            <span>Board</span>
-            <select id="selBoard">
-              <option value="small">Small (15×11)</option>
-              <option value="medium" selected>Medium (19×13)</option>
-              <option value="large">Large (25×15)</option>
-            </select>
-          </label>
-        </div>
-
-        <div class="section">
-          <label class="field">
-            <span>Theme</span>
-            <select id="selTheme">
-              <option value="light" selected>Light</option>
-              <option value="dark">Dark</option>
-            </select>
-          </label>
-          <label class="toggle">
-            <input type="checkbox" id="chkGrid" checked />
-            <span>Show grid</span>
-          </label>
-          <label class="toggle">
-            <input type="checkbox" id="chkSound" />
-            <span>Sound effects</span>
-          </label>
-          <label class="toggle" hidden>
-            <input type="checkbox" id="chkGlow" />
-            <span>Glow</span>
-          </label>
-          <label class="toggle" hidden>
-            <input type="checkbox" id="chkScanlines" />
-            <span>Scanlines</span>
-          </label>
-        </div>
-
-        <div class="section" id="blenderSection" hidden>
-          <div class="section-title">Blender mods</div>
-          <label class="toggle">
-            <input type="checkbox" id="bBorderless" />
-            <span>Borderless (wrap)</span>
-          </label>
-          <label class="toggle">
-            <input type="checkbox" id="bWalls" />
-            <span>Random internal walls</span>
-          </label>
-          <label class="toggle">
-            <input type="checkbox" id="bPortal" />
-            <span>Portal pair</span>
-          </label>
-          <label class="toggle">
-            <input type="checkbox" id="bCheese" />
-            <span>Cheese (pass through self)</span>
-          </label>
-          <label class="toggle">
-            <input type="checkbox" id="bPoison" />
-            <span>Poison fruit</span>
-          </label>
-          <label class="toggle">
-            <input type="checkbox" id="bTwin" />
-            <span>Twin snakes</span>
-          </label>
-          <label class="toggle">
-            <input type="checkbox" id="bPeaceful" />
-            <span>Peaceful (no death)</span>
-          </label>
-        </div>
-
-        <div class="section">
-          <div class="section-title">Daily challenge</div>
-          <p class="hint">A deterministic seed based on today's date — same for everyone.</p>
-          <button class="btn ghost full" id="btnDaily">🗓 Play Today's Challenge</button>
-        </div>
-
-        <div class="section">
-          <button class="btn ghost full" id="btnResetHS">Reset High Scores</button>
-        </div>
-      </div>
-    </aside>
-
-    <script nonce="{{nonce}}" src="{{scriptUri}}"></script>
+    <script nonce="{{nonce}}" src="{{snakeUri}}"></script>
+    <script nonce="{{nonce}}" src="{{twenty48Uri}}"></script>
+    <script nonce="{{nonce}}" src="{{blocksUri}}"></script>
+    <script nonce="{{nonce}}" src="{{sweeperUri}}"></script>
+    <script nonce="{{nonce}}" src="{{arcadeJsUri}}"></script>
   </body>
 </html>
