@@ -2,9 +2,12 @@ name: Publish
 
 on:
   push:
-    tags:
-      - 'v*.*.*'
+    branches: [main]
   workflow_dispatch:
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
 
 jobs:
   publish:
@@ -13,23 +16,44 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
+
       - run: npm ci
       - run: npm run compile
 
+      - name: Configure git identity
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Bump patch version
+        id: bump
+        run: |
+          NEW_TAG=$(npm version patch -m "chore: release v%s [skip ci]")
+          echo "tag=${NEW_TAG}" >> "$GITHUB_OUTPUT"
+          echo "version=${NEW_TAG#v}" >> "$GITHUB_OUTPUT"
+          echo "Bumped to ${NEW_TAG}"
+
+      - name: Push commit and tag
+        run: git push --follow-tags origin HEAD:main
+
       - name: Package VSIX
-        run: npx @vscode/vsce package --no-yarn
+        run: npx @vscode/vsce package --no-yarn --skip-license
 
       - name: Publish to Visual Studio Marketplace
         if: ${{ env.VSCE_PAT != '' }}
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
-        run: npx @vscode/vsce publish --no-yarn -p "$VSCE_PAT"
+        run: npx @vscode/vsce publish --no-yarn --skip-license -p "$VSCE_PAT"
 
-      - name: Publish to Open VSX (Cursor / VSCodium / etc.)
+      - name: Publish to Open VSX (Cursor)
         if: ${{ env.OVSX_PAT != '' }}
         env:
           OVSX_PAT: ${{ secrets.OVSX_PAT }}
@@ -37,7 +61,8 @@ jobs:
 
       - name: Attach VSIX to GitHub Release
         uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'refs/tags/')
         with:
+          tag_name: ${{ steps.bump.outputs.tag }}
+          name: ${{ steps.bump.outputs.tag }}
           files: '*.vsix'
           generate_release_notes: true
