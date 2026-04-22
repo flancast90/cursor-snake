@@ -3,6 +3,25 @@
 All notable changes to this project are documented here.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.5.0] - 2026-04-19
+
+This release adds **Pong** — Atari's 1972 original, in monochrome.
+
+### Added
+- **Pong** — classic two-paddle Pong with a single HTML5 canvas, no dependencies.
+- **1P vs CPU** with four difficulty tiers (Easy / Normal / Hard / Insane). The CPU uses predictive ball tracking with configurable reaction delay, jitter, and max paddle speed, so each tier feels genuinely different instead of "just faster".
+- **2P hotseat** — P1 on `W`/`S`, P2 on `↑`/`↓`. Share a keyboard, share the rivalry.
+- **Configurable match length**: first to 5, 7, 11 or 21 points.
+- **Choice of side** in 1P (left or right paddle).
+- **Paddle-relative deflection**: where the ball hits the paddle changes the outgoing angle (centre = straight, edge = up to 55° off horizontal), and ball speed ramps by 4.5% per paddle hit up to a cap.
+- **Streak tracking**: consecutive 1P wins against each CPU tier are recorded as a high score; losing resets the streak.
+- **Continuous hold-to-move paddles** via a global keydown/keyup listener (not rate-limited by OS key-repeat).
+
+### Changed
+- Menu hero copy now advertises seven games instead of six.
+- Added `pong`, `atari` keywords for marketplace discovery.
+- Pong slots into the menu as game **#5**, between Minesweeper and Head Soccer; Capitalist is now **#7**.
+
 ## [0.4.0] - 2026-04-19
 
 This release adds **Capitalist**, a deep idle-tycoon game inspired by Hyper Hippo's *AdVenture Capitalist* (2014).

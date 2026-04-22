@@ -1,8 +1,8 @@
 {
   "name": "cursor-snake",
   "displayName": "Monochrome Arcade",
-  "description": "A monochrome arcade collection for VS Code and Cursor — Snake, 2048, Blocks, Minesweeper, 2-player Head Soccer, and Capitalist idle tycoon. Six minimalist classics, zero dependencies, keyboard-first.",
-  "version": "0.4.1",
+  "description": "A monochrome arcade collection for VS Code and Cursor — Snake, 2048, Blocks, Minesweeper, Pong, 2-player Head Soccer, and Capitalist idle tycoon. Seven minimalist classics, zero dependencies, keyboard-first.",
+  "version": "0.5.0",
   "publisher": "flancast90",
   "license": "MIT",
   "author": {
@@ -34,6 +34,8 @@
     "tetris",
     "blocks",
     "minesweeper",
+    "pong",
+    "atari",
     "soccer",
     "head-soccer",
     "multiplayer",
@@ -93,6 +95,11 @@
       {
         "command": "cursor-arcade.capitalist",
         "title": "Play Capitalist (idle tycoon)",
+        "category": "Arcade"
+      },
+      {
+        "command": "cursor-arcade.pong",
+        "title": "Play Pong (1P / 2P)",
         "category": "Arcade"
       },
       {

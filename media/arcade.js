@@ -5,7 +5,7 @@
   const R = (window.CursorArcade = window.CursorArcade || {});
   R.games = R.games || {};
 
-  const GAME_ORDER = ['snake', 'twenty48', 'blocks', 'sweeper', 'soccer', 'capitalist'];
+  const GAME_ORDER = ['snake', 'twenty48', 'blocks', 'sweeper', 'pong', 'soccer', 'capitalist'];
   const GAME_META = {
     snake: {
       id: 'snake',
@@ -30,6 +30,12 @@
       name: 'Minesweeper',
       tagline: 'Logic, luck, and nerves of graphite.',
       hsKey: 'sweeper:medium',
+    },
+    pong: {
+      id: 'pong',
+      name: 'Pong',
+      tagline: 'Two paddles, one dot, fifty years of muscle memory.',
+      hsKey: 'pong',
     },
     soccer: {
       id: 'soccer',
@@ -206,6 +212,13 @@
           <rect x="6" y="30" width="12" height="12" rx="1" />
           <rect x="18" y="30" width="12" height="12" rx="1" fill="currentColor" />
           <rect x="30" y="30" width="12" height="12" rx="1" />
+        </svg>`;
+      case 'pong':
+        return `<svg width="48" height="48" viewBox="0 0 48 48" ${s}>
+          <rect x="6" y="16" width="4" height="16" fill="currentColor" stroke="none" />
+          <rect x="38" y="16" width="4" height="16" fill="currentColor" stroke="none" />
+          <circle cx="24" cy="24" r="2.5" fill="currentColor" stroke="none" />
+          <path d="M24 8 L24 40" stroke-dasharray="3 3" />
         </svg>`;
       case 'soccer':
         return `<svg width="48" height="48" viewBox="0 0 48 48" ${s}>
