@@ -2,7 +2,7 @@
   "name": "cursor-snake",
   "displayName": "Monochrome Arcade",
   "description": "A monochrome arcade collection for VS Code and Cursor — Snake, 2048, Blocks, Minesweeper, Pong, Tic-Tac-Toe, 2-player Head Soccer, and Capitalist idle tycoon. Eight minimalist classics, zero dependencies, keyboard-first.",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "publisher": "flancast90",
   "license": "MIT",
   "author": {
