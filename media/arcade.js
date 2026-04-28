@@ -5,7 +5,7 @@
   const R = (window.CursorArcade = window.CursorArcade || {});
   R.games = R.games || {};
 
-  const GAME_ORDER = ['snake', 'twenty48', 'blocks', 'sweeper', 'pong', 'soccer', 'capitalist'];
+  const GAME_ORDER = ['snake', 'twenty48', 'blocks', 'sweeper', 'pong', 'tictactoe', 'soccer', 'capitalist'];
   const GAME_META = {
     snake: {
       id: 'snake',
@@ -36,6 +36,12 @@
       name: 'Pong',
       tagline: 'Two paddles, one dot, fifty years of muscle memory.',
       hsKey: 'pong',
+    },
+    tictactoe: {
+      id: 'tictactoe',
+      name: 'Tic-Tac-Toe',
+      tagline: 'Three in a row. Hard mode is solved — try anyway.',
+      hsKey: 'tictactoe:wins:hard',
     },
     soccer: {
       id: 'soccer',
@@ -219,6 +225,13 @@
           <rect x="38" y="16" width="4" height="16" fill="currentColor" stroke="none" />
           <circle cx="24" cy="24" r="2.5" fill="currentColor" stroke="none" />
           <path d="M24 8 L24 40" stroke-dasharray="3 3" />
+        </svg>`;
+      case 'tictactoe':
+        return `<svg width="48" height="48" viewBox="0 0 48 48" ${s}>
+          <path d="M18 8 L18 40 M30 8 L30 40 M8 18 L40 18 M8 30 L40 30" />
+          <path d="M11 11 L15 15 M15 11 L11 15" />
+          <circle cx="24" cy="24" r="3.5" />
+          <path d="M33 33 L37 37 M37 33 L33 37" />
         </svg>`;
       case 'soccer':
         return `<svg width="48" height="48" viewBox="0 0 48 48" ${s}>

@@ -3,6 +3,26 @@
 All notable changes to this project are documented here.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.6.0] - 2026-04-27
+
+This release adds **Tic-Tac-Toe** as the eighth game.
+
+### Added
+- **Tic-Tac-Toe** — classic 3×3, monochrome canvas, mouse + keyboard.
+- **1P vs CPU** with three difficulty tiers:
+  - **Easy** — pure random.
+  - **Normal** — wins when it can, blocks when it must, with a centre/corner heuristic and a small randomness budget so it isn't perfect.
+  - **Hard** — full **minimax** solver. Perfect play; you can only draw or lose.
+- **2P hotseat** — pass the keyboard. Players alternate who moves first across consecutive rounds for fairness.
+- **Three input methods**: click any cell, numpad `1`–`9` (matches the on-screen layout `7-8-9 / 4-5-6 / 1-2-3`), or arrow keys + `Enter`/`Space`.
+- **Animated win line** drawn through the winning combination.
+- **Per-difficulty win counters** stored as high scores.
+
+### Changed
+- Menu hero copy now advertises eight games instead of seven.
+- Added `tic-tac-toe`, `tictactoe`, `noughts-and-crosses`, `minimax` keywords for marketplace discovery.
+- Tic-Tac-Toe slots into the menu as game **#6**, between Pong and Head Soccer.
+
 ## [0.5.0] - 2026-04-19
 
 This release adds **Pong** — Atari's 1972 original, in monochrome.

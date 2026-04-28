@@ -3,7 +3,7 @@
 # Cursor Arcade
 
 **Minimalist arcade classics inside your editor.**
-Snake. 2048. Blocks. Minesweeper. Pong. Head Soccer. Capitalist.
+Snake. 2048. Blocks. Minesweeper. Pong. Tic-Tac-Toe. Head Soccer. Capitalist.
 Monochrome. Keyboard-first. Zero dependencies. One keystroke away.
 
 <p>
@@ -26,7 +26,7 @@ Monochrome. Keyboard-first. Zero dependencies. One keystroke away.
 
 You spent three hours rebasing. Compile just failed. The linter is screaming. You don't want to alt-tab to a browser and burn the next twenty minutes on r/games — you want three minutes, something your hands already know, and a fresh brain when you come back.
 
-**Cursor Arcade gives you seven games at one keystroke**, all rendered in the same restrained black-and-white grammar as the rest of your IDE. No animations that distract. No accounts. No telemetry. No web requests. Close the panel and they disappear — your best scores don't.
+**Cursor Arcade gives you eight games at one keystroke**, all rendered in the same restrained black-and-white grammar as the rest of your IDE. No animations that distract. No accounts. No telemetry. No web requests. Close the panel and they disappear — your best scores don't.
 
 ## The Games
 
@@ -37,6 +37,7 @@ You spent three hours rebasing. Compile just failed. The linter is screaming. Yo
 |   | **Blocks** | Tetrominoes stacking into lines. Hold, ghost-piece, standard scoring. Because of course. | Arrows · `Z`/`X` rotate · `Space` hard-drop · `C` hold |
 |   | **Minesweeper** | Pure logic. Occasionally pure guessing. Easy / Medium / Hard. | Click reveal · Right-click / Shift+click flag · Middle-click chord |
 |   | **Pong** | 1972's original. 1P vs CPU with four difficulty tiers, or hotseat 2P. First to 5/7/11/21. | `W`/`S` or `↑`/`↓` move paddle · `Space` pause · `R` restart |
+|   | **Tic-Tac-Toe** | 3×3, 1P vs CPU (Easy / Normal / unbeatable Hard via minimax) or hotseat 2P. | Click cell, or numpad `1-9`, or arrows + `Enter` · `R` reset |
 |   | **Head Soccer** | 1P vs CPU or hotseat 2P. Big heads, small ball, absurd physics. Power-ups for fire, ice, giant, and multiball. | P1: `A`/`D` move · `W` jump · `S` kick · `Q` power · P2: `←`/`→` move · `↑` jump · `↓` kick · `/` power |
 |   | **Capitalist** | Idle tycoon inspired by AdVenture Capitalist. Ten businesses per planet across Earth, Moon, and Mars. Managers, cash upgrades, milestones, offline earnings, and angel-investor prestige. | Click / tap to earn · `1`/`2`/`3` switch planet · `B`/`U`/`A` switch tabs · `Space` pause |
 
@@ -69,12 +70,13 @@ Hit `Cmd/Ctrl + Shift + P` and run one of:
 | `Arcade: Play Blocks` | Jump straight into Blocks. |
 | `Arcade: Play Minesweeper` | Jump straight into Minesweeper. |
 | `Arcade: Play Pong (1P / 2P)` | Jump straight into Pong. |
+| `Arcade: Play Tic-Tac-Toe (1P / 2P)` | Jump straight into Tic-Tac-Toe. |
 | `Arcade: Play Head Soccer (1P / 2P)` | Jump straight into Head Soccer. |
 | `Arcade: Play Capitalist (idle tycoon)` | Jump straight into Capitalist. |
 | `Arcade: Play Snake — Daily Challenge` | The same seeded board as everyone else today. |
 | `Arcade: Reset All High Scores` | Start fresh. |
 
-From the main menu, press `1`–`7` to pick a game. `Esc` always takes you back. `Space` pauses. `R` restarts. That's the whole shape of it.
+From the main menu, press `1`–`8` to pick a game. `Esc` always takes you back. `Space` pauses. `R` restarts. That's the whole shape of it.
 
 ## Controls
 
@@ -121,6 +123,18 @@ From the main menu, press `1`–`7` to pick a game. `Esc` always takes you back.
 - First to 5 / 7 / 11 / 21 points (configurable). Deflection angle depends on where the ball hits your paddle; ball speed ramps up every rally.
 - Consecutive 1P wins against each CPU tier are tracked as a streak.
 
+### Tic-Tac-Toe
+| Input | Action |
+|---|---|
+| Click a cell | Place your mark |
+| Numpad `1`–`9` | Place via numpad layout (`7-8-9` top row, `1-2-3` bottom row) |
+| Arrows + `Enter` / `Space` | Move keyboard cursor and commit |
+| `R` | New game |
+
+- **1P** vs CPU with three difficulty tiers: **Easy** (random), **Normal** (mostly smart, slightly fallible), **Hard** (full minimax — perfect play, you can only draw or lose).
+- **2P** hotseat — pass the keyboard. Players alternate who moves first across rounds.
+- Total wins per CPU tier are tracked as a high score.
+
 ### Head Soccer
 | Player | Move | Jump | Kick | Power |
 |---|---|---|---|---|
@@ -157,7 +171,7 @@ An AdVenture Capitalist-style idle tycoon that plays nicely in the background wh
 
 ## Features
 
-- **Seven polished games** in one extension — no tab-switching, no context-switching.
+- **Eight polished games** in one extension — no tab-switching, no context-switching.
 - **Monochrome throughout** — designed to live next to your code without yelling.
 - **Persistent high scores** per game, per mode, per difficulty.
 - **Worldwide daily Snake challenge** — a seeded board that changes every UTC day.
@@ -247,6 +261,7 @@ If you're shipping a new game, please keep the aesthetic monochrome — we'll me
 - **Blocks** — tetromino stacking is the mechanic; this implementation is independent and not affiliated with Tetris Holding.
 - **Minesweeper** — Microsoft's 1990 classic; the underlying game is in the public domain.
 - **Pong** — Atari's 1972 arcade classic; the underlying game is in the public domain.
+- **Tic-Tac-Toe** — folk game predating recorded history; "Hard" mode is a textbook minimax solver. Public domain.
 - **Head Soccer** — big-headed soccer is a long-running flash/mobile genre (D1, BGL, etc.); this implementation is independent, with custom physics and a monochrome coat of paint.
 - **Capitalist** — inspired by Hyper Hippo's *AdVenture Capitalist* (2014). Business lists, coefficients, milestone halvings, and the angel formula are modelled after the official wiki; all art and code here are original.
 

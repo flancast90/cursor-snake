@@ -4,7 +4,7 @@ import * as fs from 'fs';
 
 const STORAGE_KEY = 'cursorArcade.v1';
 
-type GameId = 'snake' | 'twenty48' | 'blocks' | 'sweeper' | 'soccer' | 'capitalist' | 'pong';
+type GameId = 'snake' | 'twenty48' | 'blocks' | 'sweeper' | 'soccer' | 'capitalist' | 'pong' | 'tictactoe';
 
 interface ArcadeStorage {
   highScores: Record<string, number>;
@@ -25,6 +25,7 @@ export function activate(context: vscode.ExtensionContext) {
     ['cursor-arcade.soccer', () => open({ game: 'soccer' })],
     ['cursor-arcade.capitalist', () => open({ game: 'capitalist' })],
     ['cursor-arcade.pong', () => open({ game: 'pong' })],
+    ['cursor-arcade.tictactoe', () => open({ game: 'tictactoe' })],
     ['cursor-arcade.dailyChallenge', () => open({ game: 'snake', daily: true })],
   ];
 
@@ -203,6 +204,9 @@ class ArcadePanel {
     const pongUri = webview.asWebviewUri(
       vscode.Uri.file(path.join(mediaPath, 'games', 'pong.js')),
     );
+    const tictactoeUri = webview.asWebviewUri(
+      vscode.Uri.file(path.join(mediaPath, 'games', 'tictactoe.js')),
+    );
 
     const nonce = makeNonce();
     const csp =
@@ -225,7 +229,8 @@ class ArcadePanel {
       .replace(/{{sweeperUri}}/g, sweeperUri.toString())
       .replace(/{{soccerUri}}/g, soccerUri.toString())
       .replace(/{{capitalistUri}}/g, capitalistUri.toString())
-      .replace(/{{pongUri}}/g, pongUri.toString());
+      .replace(/{{pongUri}}/g, pongUri.toString())
+      .replace(/{{tictactoeUri}}/g, tictactoeUri.toString());
 
     return html;
   }
